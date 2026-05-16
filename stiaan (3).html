@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stiaan Tedani — Architect of Behavior & Capital</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f2ede6;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --dark-brown: #1a1410;
+    --mid: #6b6560;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(15%) contrast(1.08);
+    display: block;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+    z-index: 3;
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(to left, var(--black), transparent);
+    z-index: 2;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 8vw, 120px);
+    line-height: 0.88;
+    color: var(--off-white);
+    animation: fadeUp 0.8s 0.1s ease both;
+    margin-bottom: 16px;
+  }
+
+  .hero-name span { color: var(--gold); }
+
+  .hero-origin {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(14px, 1.6vw, 18px);
+    color: var(--mid);
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s 0.15s ease both;
+    line-height: 1.7;
+    border-left: 2px solid var(--gold);
+    padding-left: 18px;
+    max-width: 420px;
+  }
+
+  .hero-origin strong {
+    color: var(--off-white);
+    font-style: normal;
+  }
+
+  .hero-punch {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 2.8vw, 34px);
+    line-height: 1.3;
+    color: var(--off-white);
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s 0.25s ease both;
+    max-width: 500px;
+  }
+
+  .hero-punch em { color: var(--gold); font-style: normal; }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--off-white);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 15px 36px;
+    border: 1px solid rgba(242,237,230,0.2);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* TICKER */
+  .strip {
+    background: var(--gold);
+    padding: 18px 0;
+    overflow: hidden;
+  }
+
+  .strip-inner {
+    display: flex;
+    gap: 80px;
+    animation: ticker 24s linear infinite;
+    white-space: nowrap;
+  }
+
+  .strip span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--black);
+  }
+
+  .strip-dot { opacity: 0.35; }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ORIGIN SECTION */
+  .origin-section {
+    padding: 140px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .origin-section::before {
+    content: 'TEDANI';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 280px;
+    color: rgba(255,255,255,0.016);
+    bottom: -40px;
+    right: -20px;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+
+  .origin-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5.5vw, 80px);
+    line-height: 0.95;
+    color: var(--off-white);
+    margin-bottom: 36px;
+  }
+
+  .origin-body {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(242,237,230,0.6);
+  }
+
+  .origin-body p { margin-bottom: 20px; }
+  .origin-body p:last-child { margin-bottom: 0; }
+  .origin-body strong { color: var(--off-white); font-weight: 500; }
+  .origin-body em { color: var(--gold); font-style: italic; }
+
+  .origin-right { display: flex; flex-direction: column; }
+
+  .origin-quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.25;
+    color: var(--off-white);
+    margin-bottom: 20px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .origin-quote span { color: var(--gold); }
+
+  .origin-attribution {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 52px;
+  }
+
+  .origin-fact {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .fact-marker {
+    color: var(--gold);
+    font-size: 13px;
+    padding-top: 2px;
+    min-width: 20px;
+  }
+
+  .fact-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(242,237,230,0.65);
+  }
+
+  .fact-text strong { color: var(--off-white); }
+
+  /* TRUTH */
+  .truth {
+    padding: 120px 80px;
+    background: #0d0b09;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .truth-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 0.95;
+    color: var(--off-white);
+    margin-bottom: 32px;
+  }
+
+  .truth-body {
+    font-size: 17px;
+    line-height: 1.85;
+    color: rgba(242,237,230,0.6);
+  }
+
+  .truth-body strong { color: var(--off-white); font-weight: 500; }
+
+  .truth-right { display: flex; flex-direction: column; }
+
+  .truth-stat {
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .truth-stat:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 60px;
+    opacity: 0.75;
+  }
+
+  .stat-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--off-white);
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  /* EXPERTISE */
+  .expertise {
+    padding: 120px 80px;
+    background: var(--black);
+  }
+
+  .expertise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding-bottom: 40px;
+  }
+
+  .expertise-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 5vw, 72px);
+    line-height: 1;
+    color: var(--off-white);
+  }
+
+  .expertise-intro {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--mid);
+    max-width: 320px;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .expertise-card {
+    background: var(--black);
+    padding: 40px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .expertise-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .expertise-card:hover::before { transform: scaleX(1); }
+  .expertise-card:hover { background: #0e0c0a; }
+
+  .card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 20px;
+    opacity: 0.6;
+  }
+
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--off-white);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.75;
+  }
+
+  /* REVIEWS */
+  .reviews {
+    padding: 120px 80px;
+    background: #0d0b09;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .reviews-header { text-align: center; margin-bottom: 20px; }
+
+  .reviews-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 5vw, 72px);
+    color: var(--off-white);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .trustpilot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 28px;
+    margin-bottom: 72px;
+  }
+
+  .tp-stars { display: flex; gap: 3px; }
+
+  .tp-star {
+    width: 18px; height: 18px;
+    background: #00b67a;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .tp-text { font-size: 13px; color: var(--mid); }
+  .tp-text strong { color: #00b67a; }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .review-card {
+    background: var(--black);
+    padding: 36px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: border-color 0.3s;
+  }
+
+  .review-card:hover { border-color: rgba(201,168,76,0.3); }
+
+  .review-stars { display: flex; gap: 3px; margin-bottom: 20px; }
+
+  .r-star {
+    width: 13px; height: 13px;
+    background: #00b67a;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .review-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--off-white);
+    margin-bottom: 28px;
+  }
+
+  .review-author { display: flex; align-items: center; gap: 12px; }
+
+  .review-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #8a6a1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+
+  .review-name { font-size: 14px; font-weight: 500; color: var(--off-white); }
+  .review-role { font-size: 12px; color: var(--mid); margin-top: 2px; }
+  .review-verified { margin-left: auto; font-size: 11px; color: #00b67a; }
+
+  /* CTA */
+  .cta-section {
+    padding: 140px 80px;
+    background: var(--black);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: 'DECIDE';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 300px;
+    color: rgba(255,255,255,0.013);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .cta-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .cta-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 7vw, 100px);
+    line-height: 0.95;
+    color: var(--off-white);
+    margin-bottom: 32px;
+  }
+
+  .cta-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--mid);
+    margin: 0 auto 56px;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 36px 80px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .footer-links { display: flex; gap: 32px; }
+
+  .footer-links a {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-copy { font-size: 12px; color: rgba(107,101,96,0.45); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { height: 60vw; }
+    .hero-left { padding: 60px 32px; }
+    .origin-section, .truth { grid-template-columns: 1fr; gap: 56px; }
+    .expertise-grid { grid-template-columns: 1fr 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .origin-section, .truth, .expertise, .reviews, .cta-section, footer { padding-left: 32px; padding-right: 32px; }
+    .expertise-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .expertise-intro { text-align: left; max-width: 100%; }
+  }
+
+  @media (max-width: 600px) {
+    .expertise-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">Behavior · Capital · High-Performance Systems</p>
+    <h1 class="hero-name">STIAAN<br><span>TEDANI</span></h1>
+    <p class="hero-origin">
+      A 5 year old named me when I was broken.<br>
+      No hesitation. No explanation.<br>
+      <strong>"Tedani. Don't be silly."</strong>
+    </p>
+    <p class="hero-punch">
+      I stopped <em>managing</em> my life.<br>
+      I started <em>architecting</em> it.<br>
+      Now I do that for others.
+    </p>
+    <div class="hero-cta">
+      <a href="#cta" class="btn-primary">Work With Me</a>
+      <a href="#origin" class="btn-ghost">My Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="Untitled_design__6_.png" alt="Stiaan Tedani" />
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="strip">
+  <div class="strip-inner">
+    <span>Behavior Mastery</span><span class="strip-dot"> ✦ </span>
+    <span>Capital Architecture</span><span class="strip-dot"> ✦ </span>
+    <span>Absolute Truth</span><span class="strip-dot"> ✦ </span>
+    <span>Executive Coaching</span><span class="strip-dot"> ✦ </span>
+    <span>Risk-Managed Strategy</span><span class="strip-dot"> ✦ </span>
+    <span>Pattern Recognition</span><span class="strip-dot"> ✦ </span>
+    <span>High-Performance Systems</span><span class="strip-dot"> ✦ </span>
+    <span>Structure Before Scale</span><span class="strip-dot"> ✦ </span>
+    <span>Behavior Mastery</span><span class="strip-dot"> ✦ </span>
+    <span>Capital Architecture</span><span class="strip-dot"> ✦ </span>
+    <span>Absolute Truth</span><span class="strip-dot"> ✦ </span>
+    <span>Executive Coaching</span><span class="strip-dot"> ✦ </span>
+    <span>Risk-Managed Strategy</span><span class="strip-dot"> ✦ </span>
+    <span>Pattern Recognition</span><span class="strip-dot"> ✦ </span>
+    <span>High-Performance Systems</span><span class="strip-dot"> ✦ </span>
+    <span>Structure Before Scale</span><span class="strip-dot"> ✦ </span>
+  </div>
+</div>
+
+<!-- ORIGIN -->
+<section class="origin-section" id="origin">
+  <div>
+    <p class="section-label">The Origin</p>
+    <h2 class="origin-headline">CALLED INTO<br>EXISTENCE.</h2>
+    <div class="origin-body">
+      <p>I was broken. Not metaphorically. <strong>Actually broken.</strong> And in that moment I asked the only honest question left:</p>
+      <p><em>"Who am I?"</em></p>
+      <p>A 5 year old answered without hesitation. No filter. No agenda. Just immediate, certain, effortless truth.</p>
+      <p>He didn't know that Tedani already existed — in an ancient world encyclopedia, describing a people who <strong>live everywhere, adapt to everything</strong>, and are bound by one unshakeable belief:</p>
+      <p><strong>Absolute truth exists. And it can be found.</strong></p>
+      <p>That was the moment I stopped reacting and started building. Not a career. Not a brand. <em>A system for being alive deliberately.</em></p>
+    </div>
+  </div>
+  <div class="origin-right">
+    <div class="origin-quote">
+      "Tedani. <span>Don't be silly."</span>
+    </div>
+    <div class="origin-attribution">— A 5 year old. No hesitation. Full certainty.</div>
+    <div>
+      <div class="origin-fact">
+        <div class="fact-marker">✦</div>
+        <div class="fact-text"><strong>Former national champion athlete.</strong> I know what it feels like to perform under pressure — and what it costs when you don't have a system holding you.</div>
+      </div>
+      <div class="origin-fact">
+        <div class="fact-marker">✦</div>
+        <div class="fact-text"><strong>The name predates me.</strong> Tedani: a people of absolute truth, pattern, and adaptability. A child named me what I already was before I knew it.</div>
+      </div>
+      <div class="origin-fact">
+        <div class="fact-marker">✦</div>
+        <div class="fact-text"><strong>I build what saved me.</strong> Behavioral frameworks. Capital architecture. Systems that carry you when discipline alone can't.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUTH -->
+<section class="truth" id="truth">
+  <div>
+    <p class="section-label">The Hard Truth</p>
+    <h2 class="truth-headline">YOUR SYSTEM IS THE PROBLEM.</h2>
+    <div class="truth-body">
+      Not your effort. Not your intelligence. Not the market.<br><br>
+      <strong>Your decisions are leaking performance.</strong> Slow. Emotional. Reactive.<br><br>
+      Most leaders don't have a strategy problem. They have a <strong>behavior problem wearing a strategy's clothes.</strong> The same decision, dressed differently, repeated for years — bleeding capital, time, and trust.<br><br>
+      I fix that. At the root. Not with motivation. With <strong>architecture.</strong>
+    </div>
+  </div>
+  <div class="truth-right">
+    <div class="truth-stat">
+      <div class="stat-num">01</div>
+      <div>
+        <div class="stat-title">The Pattern Always Precedes the Crash</div>
+        <div class="stat-desc">Before every blown trade, missed target, or derailed team — there was a decision pattern that predicted it. I find it before it costs you.</div>
+      </div>
+    </div>
+    <div class="truth-stat">
+      <div class="stat-num">02</div>
+      <div>
+        <div class="stat-title">Structure Is the Highest Form of Freedom</div>
+        <div class="stat-desc">Champions don't wing it. The system carries you when discipline alone can't. I build the architecture that holds under pressure.</div>
+      </div>
+    </div>
+    <div class="truth-stat">
+      <div class="stat-num">03</div>
+      <div>
+        <div class="stat-title">Data Doesn't Lie. Feelings Do.</div>
+        <div class="stat-desc">Every framework I build is measured, tracked, adjusted. No theory. No inspiration. No noise. Just outcomes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section class="expertise" id="expertise">
+  <div class="expertise-header">
+    <h2 class="expertise-title">WHAT I<br>BUILD</h2>
+    <p class="expertise-intro">Four pillars. One outcome: you performing at your ceiling — deliberately.</p>
+  </div>
+  <div class="expertise-grid">
+    <div class="expertise-card">
+      <div class="card-num">01</div>
+      <div class="card-title">Behavioral Mastery</div>
+      <div class="card-desc">Decode how your psychology is sabotaging your performance. Replace reactive patterns with deliberate decision architecture that holds under pressure.</div>
+    </div>
+    <div class="expertise-card">
+      <div class="card-num">02</div>
+      <div class="card-title">Capital Systems Architecture</div>
+      <div class="card-desc">Risk-managed strategies that protect and grow capital. Built on discipline, not hope. Precision over prediction. Always.</div>
+    </div>
+    <div class="expertise-card">
+      <div class="card-num">03</div>
+      <div class="card-title">Performance Frameworks</div>
+      <div class="card-desc">Data-driven systems that measure only what actually moves outcomes. No vanity metrics. No noise. What works, tracked and adjusted.</div>
+    </div>
+    <div class="expertise-card">
+      <div class="card-num">04</div>
+      <div class="card-title">Leadership Optimization</div>
+      <div class="card-desc">High-accountability structures that transform teams from reactive to relentless. Culture is a system. Build it like one.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="reviews-header">
+    <p class="section-label">Verified Results</p>
+    <h2 class="reviews-title">WHAT CLIENTS SAY</h2>
+  </div>
+  <div style="text-align:center; margin-bottom:64px;">
+    <div class="trustpilot-badge">
+      <div class="tp-stars">
+        <div class="tp-star"></div><div class="tp-star"></div><div class="tp-star"></div><div class="tp-star"></div><div class="tp-star"></div>
+      </div>
+      <div class="tp-text"><strong>Excellent</strong> &nbsp;·&nbsp; 4.9 / 5 on Trustpilot &nbsp;·&nbsp; Verified Reviews</div>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">
+        <div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div>
+      </div>
+      <p class="review-text">"I came in thinking I had a strategy problem. Three weeks in I realized I'd been making the same emotional decision in different clothes for four years. Stiaan dismantled it surgically."</p>
+      <div class="review-author">
+        <div class="review-avatar">MR</div>
+        <div>
+          <div class="review-name">Marcus R.</div>
+          <div class="review-role">Fund Manager, Johannesburg</div>
+        </div>
+        <div class="review-verified">✓ Verified</div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">
+        <div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div>
+      </div>
+      <p class="review-text">"No fluff. No hype. A brutal honest audit of how I was leading — and a concrete system to fix it. Revenue up 34% in six months. That's not me. That's the system working."</p>
+      <div class="review-author">
+        <div class="review-avatar">TK</div>
+        <div>
+          <div class="review-name">Taryn K.</div>
+          <div class="review-role">CEO, Cape Town</div>
+        </div>
+        <div class="review-verified">✓ Verified</div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">
+        <div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div><div class="r-star"></div>
+      </div>
+      <p class="review-text">"He doesn't tell you what you want to hear. He shows you what's actually happening. That's rare. I've paid more for coaches who said less and changed nothing. This is different."</p>
+      <div class="review-author">
+        <div class="review-avatar">JP</div>
+        <div>
+          <div class="review-name">James P.</div>
+          <div class="review-role">Trader &amp; Entrepreneur</div>
+        </div>
+        <div class="review-verified">✓ Verified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <p class="cta-label">One Decision. Everything Changes.</p>
+  <h2 class="cta-headline">STOP MANAGING.<br>START PERFORMING.</h2>
+  <p class="cta-sub">You already know something isn't working. The question is whether you're ready to find out exactly what it is.</p>
+  <div class="cta-buttons">
+    <a href="mailto:hello@stiaan.com" class="btn-primary">Book a Strategy Call</a>
+    <a href="#" class="btn-ghost">Download My Framework</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">STIAAN TEDANI</div>
+  <div class="footer-links">
+    <a href="#origin">Story</a>
+    <a href="#expertise">Services</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#cta">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Stiaan Tedani. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
